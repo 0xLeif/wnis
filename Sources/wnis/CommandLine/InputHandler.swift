@@ -20,6 +20,8 @@ enum InputHandler {
             }
         }
         
+        print()
+        
         return outcome == .success
     }
 }

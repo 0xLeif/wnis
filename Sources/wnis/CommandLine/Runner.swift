@@ -22,7 +22,7 @@ struct Runner {
                     "n": .fail
                 ]
             ) else {
-                break
+                continue
             }
             
             print(
@@ -30,13 +30,29 @@ struct Runner {
                 Name: \(change.name)
                 Evolution ID: \(change.evolutionID)
 
-                Description: \(change.description)
-
-                Code Example: \(change.exampleCode)
-                
-                Code Example Output: \(change.example())\n
+                Description: \(change.description)\n
                 """
             )
+            
+            for example in change.examples {
+                guard InputHandler.handleInput(
+                    message: "See an example (y/n)",
+                    outcomes: [
+                        "y": .success,
+                        "n": .fail
+                    ]
+                ) else {
+                    continue
+                }
+                
+                print(
+                    """
+                    Code: \(example.code)
+
+                    Output: \(example.output())\n
+                    """
+                )
+            }
         }
 
     }
