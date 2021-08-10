@@ -13,11 +13,11 @@ struct Swift_5_1: SwiftVersion {
                         struct Dog {
                           var age: Int = 0
                           var name: String
-
+                        
                           // The generated memberwise init:
                           init(age: Int = 0, name: String)
                         }
-
+                        
                         // This now works
                         let sparky = Dog(name: "Sparky") // Dog(age: 0, name: "Sparky")
                         """
@@ -31,7 +31,7 @@ struct Swift_5_1: SwiftVersion {
                           var c: String = "c"
                           let d: Bool = true
                           var e: Double = Double.random(in: 0 ... .pi)
-
+                        
                           // The generated memberwise init:
                           init(
                             a: Int = 97,
@@ -85,7 +85,7 @@ struct Swift_5_1: SwiftVersion {
                         code: """
                         // An opaque type behaves like a "reverse generic". In a traditional generic function, the caller decides what types get bound to the callee's generic arguments
                         func generic<T: Shape>() -> T { ... }
-
+                        
                         let x: Rectangle = generic() // T == Rectangle, chosen by caller
                         let x: Circle = generic() // T == Circle, chosen by caller
                         """
