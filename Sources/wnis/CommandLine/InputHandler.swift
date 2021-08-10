@@ -24,4 +24,26 @@ enum InputHandler {
         
         return outcome == .success
     }
+    
+    static func getInput(
+        message: String,
+        outcomes: [String: InputOutcome]
+    ) -> String {
+        var outcome: InputOutcome = .retry
+        var lastInput: String = ""
+        
+        while outcome == .retry {
+            print("\(message): ", terminator: "")
+            
+            if let input = readLine(),
+               let inputOutcome = outcomes[input] {
+                outcome = inputOutcome
+                lastInput = input
+            }
+        }
+        
+        print()
+        
+        return lastInput
+    }
 }

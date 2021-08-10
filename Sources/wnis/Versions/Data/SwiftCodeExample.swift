@@ -1,4 +1,4 @@
 struct SwiftCodeExample {
-    let code: String
-    let output: () -> String
+    var code: String
+    var output: (() -> String)? = nil
 }

@@ -4,5 +4,5 @@ struct SwiftChange {
     
     var description: String
     
-    var examples: [SwiftCodeExample]
+    var examples: [SwiftCodeExample]? = nil
 }
