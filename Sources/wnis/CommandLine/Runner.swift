@@ -42,10 +42,12 @@ enum MainRunner {
             
             print(
                 """
-                Name: \(change.name)
-                Evolution ID: \(change.evolutionID)
+                [Name]: \(change.name)
+                [Evolution ID]: \(change.evolutionID)
 
-                Description: \(change.description)\n
+                [Description]
+                
+                \(change.description)\n
                 """
             )
             
@@ -64,15 +66,25 @@ enum MainRunner {
                     if let output = example.output {
                         print(
                             """
-                            Code: \(example.code)
+                            [Code]
+                            
+                            ```
+                            \(example.code)
+                            ```
 
-                            Output: \(output())\n
+                            [Output]
+                            
+                            \(output())\n
                             """
                         )
                     } else {
                         print(
                             """
-                            Code: \(example.code)\n
+                            [Code]
+                            
+                            ```
+                            \(example.code)
+                            ```\n
                             """
                         )
                     }
