@@ -187,71 +187,116 @@ struct Swift_5_5: SwiftVersion {
             SwiftChange(
                 name: "async let bindings",
                 evolutionID: "SE-0317",
-                description: "",
-                examples: []
+                description: "Structured concurrency provides a paradigm for spawning concurrent child tasks in scoped task groups, establishing a well-defined hierarchy of tasks which allows for cancellation, error propagation, priority management, and other tricky details of concurrency management to be handled transparently.",
+                examples: [
+                    SwiftCodeExample(
+                        code: """
+                            // given:
+                            //   func chopVegetables() async throws -> [Vegetables]
+                            //   func marinateMeat() async -> Meat
+                            //   func preheatOven(temperature: Int) async -> Oven
+
+                            func makeDinner() async throws -> Meal {
+                              async let veggies = chopVegetables()
+                              async let meat = marinateMeat()
+                              async let oven = preheatOven(temperature: 350)
+
+                              let dish = Dish(ingredients: await [try veggies, meat])
+                              return try await oven.cook(dish, duration: .hours(3))
+                            }
+                            """
+                    )
+                ]
             ),
             
             SwiftChange(
                 name: "Continuations for interfacing async tasks with synchronous code",
                 evolutionID: "SE-0300",
-                description: "",
-                examples: []
+                description: "Asynchronous Swift code needs to be able to work with existing synchronous code that uses techniques such as completion callbacks and delegate methods to respond to events. Asynchronous tasks can suspend themselves on continuations which synchronous code can then capture and invoke to resume the task in response to an event."
             ),
             
             SwiftChange(
                 name: "Actors",
                 evolutionID: "SE-0306",
-                description: "",
-                examples: []
+                description: "The actor model defines entities called actors that are perfect for this task. Actors allow you as a programmer to declare that a bag of state is held within a concurrency domain and then define multiple operations that act upon it. Each actor protects its own data through data isolation, ensuring that only a single thread will access that data at a given time, even when many clients are concurrently making requests of the actor. As part of the Swift Concurrency Model, actors provide the same race and memory safety properties as structured concurrency, but provide the familiar abstraction and reuse features that other explicitly declared types in Swift enjoy.",
+                examples: [
+                    SwiftCodeExample(
+                        code: """
+                            actor BankAccount {
+                              let accountNumber: Int
+                              var balance: Double
+
+                              init(accountNumber: Int, initialDeposit: Double) {
+                                self.accountNumber = accountNumber
+                                self.balance = initialDeposit
+                              }
+                            }
+                            """
+                    )
+                ]
             ),
             
             SwiftChange(
                 name: "Global actors",
                 evolutionID: "SE-0316",
-                description: "",
-                examples: []
+                description: """
+                    This proposal introduces global actors, which extend the notion of actor isolation outside of a single actor type, so that global state (and the functions that access it) can benefit from actor isolation, even if the state and functions are scattered across many different types, functions and modules. Global actors make it possible to safely work with global variables in a concurrent program, as well as modeling other global program constraints such as code that must only execute on the "main thread" or "UI thread".
+
+                    Global actors also provide a means to eliminate data races on global and static variables, allowing access to such variables to be synchronized via a global actor.
+                    """
             ),
             
             SwiftChange(
                 name: "Sendable and @Sendable closures",
                 evolutionID: "SE-0302",
-                description: "",
-                examples: []
+                description: "This proposal describes an approach to address one of the challenging problems in this space — how to type check value passing between structured concurrency constructs and actors messages. As such, this is a unifying theory that provides some of the underlying type system mechanics that make them both safe and work well together."
             ),
             
             SwiftChange(
                 name: "#if for postfix member expressions",
                 evolutionID: "SE-0308",
-                description: "",
-                examples: []
+                description: "Swift has conditional compilation block #if ... #endif which allows code to be conditionally compiled depending on the value of one or more compilation conditions. Currently, unlike #if in C family languages, the body of each clause must surround complete statements. However, in some cases, especially in result builder contexts, demand for applying #if to partial expressions has emerged. This proposal expands #if ... #endif to be able to surround postfix member expressions.",
+                examples: [
+                    SwiftCodeExample(
+                        code: """
+                            baseExpr
+                            #if CONDITION
+                              .someOptionalMember?
+                              .someMethod()
+                            #else
+                              .otherMember
+                            #endif
+                            """
+                    )
+                ]
             ),
             
             SwiftChange(
                 name: "Allow interchangeable use of CGFloat and Double types",
                 evolutionID: "SE-0307",
-                description: "",
-                examples: []
+                description: "I propose to extend the language and allow Double and CGFloat types to be used interchangeably by means of transparently converting one type into the other as a sort of retroactive typealias between these two types. This is a narrowly defined implicit conversion intended to be part of the existing family of implicit conversions (including NSType <=> CFType conversions) supported by Swift to strengthen Objective-C and Swift interoperability. The only difference between the proposed conversion and existing ones is related to the fact that interchangeability implies both narrowing conversion (Double -> CGFloat) and widening one (CGFloat -> Double) on 32-bit platforms. This proposal is not about generalizing support for implicit conversions to the language."
             ),
             
             SwiftChange(
                 name: "Codable synthesis for enums with associated values",
                 evolutionID: "SE-0295",
-                description: "",
-                examples: []
+                description: """
+                    Codable was introduced in SE-0166 with support for synthesizing Encodable and Decodable conformance for class and struct types, that only contain values that also conform to the respective protocols.
+
+                    This proposal will extend the support for auto-synthesis of these conformances to enums with associated values.
+                    """
             ),
             
             SwiftChange(
                 name: "Extend property wrappers to function and closure parameters",
                 evolutionID: "SE-0293",
-                description: "",
-                examples: []
+                description: "Property Wrappers were introduced in Swift 5.1, and have since become a popular mechanism for abstracting away common accessor patterns for properties. Currently, applying a property wrapper is solely permitted on local variables and type properties. However, with increasing adoption, demand for extending where property wrappers can be applied has emerged. This proposal aims to extend property wrappers to function and closure parameters."
             ),
             
             SwiftChange(
                 name: "Extending static member lookup in generic contexts",
                 evolutionID: "SE-0299",
-                description: "",
-                examples: []
+                description: "Using static member declarations to provide semantic names for commonly used values which can then be accessed via leading dot syntax is an important tool in API design, reducing type repetition and improving call-site legibility. Currently, when a parameter is generic, there is no effective way to take advantage of this syntax. This proposal aims to relax restrictions on accessing static members on protocols to afford the same call-site legibility to generic APIs."
             )
         ]
     }

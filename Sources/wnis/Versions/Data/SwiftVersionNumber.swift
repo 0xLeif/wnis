@@ -1,4 +1,5 @@
 enum SwiftVersionNumber: String, CaseIterable {
+    case swift5_x = "5.x"
     case swift5_0 = "5.0"
     case swift5_1 = "5.1"
     case swift5_2 = "5.2"
@@ -11,6 +12,8 @@ enum SwiftVersionNumber: String, CaseIterable {
 extension SwiftVersionNumber {
     var swiftVersion: SwiftVersion {
         switch self {
+        case .swift5_x:
+            return Swift_5_x()
         case .swift5_0:
             return Swift_5_0()
         case .swift5_1:
