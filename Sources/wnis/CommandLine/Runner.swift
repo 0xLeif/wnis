@@ -42,49 +42,49 @@ enum MainRunner {
             
             print(
                 """
-                [Name]: \(change.name)
-                [Evolution ID]: \(change.evolutionID)
+                \t[Name]: \(change.name)
+                \t[Evolution ID]: \(change.evolutionID)
 
-                [Description]
+                \t[Description]
                 
-                \(change.description)\n
+                \t\(change.description)\n
                 """
             )
             
             if let examples = change.examples {
                 for example in examples {
                     guard InputHandler.handleInput(
-                        message: "See an example (y/n)",
+                        message: "\tSee an example (y/n)",
                         outcomes: [
                             "y": .success,
                             "n": .fail
                         ]
                     ) else {
-                        continue
+                        break
                     }
                     
                     if let output = example.output {
                         print(
                             """
-                            [Code]
+                            \t[Code]
                             
-                            ```
-                            \(example.code)
-                            ```
+                            \t```
+                            \(example.code.split(separator: "\n").map { "\t" + $0 }.joined(separator: "\n"))
+                            \t```
 
-                            [Output]
+                            \t[Output]
                             
-                            \(output())\n
+                            \t\(output())\n
                             """
                         )
                     } else {
                         print(
                             """
-                            [Code]
+                            \t[Code]
                             
-                            ```
-                            \(example.code)
-                            ```\n
+                            \t```
+                            \(example.code.split(separator: "\n").map { "\t" + $0 }.joined(separator: "\n"))
+                            \t```\n
                             """
                         )
                     }
