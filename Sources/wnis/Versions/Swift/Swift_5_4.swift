@@ -9,12 +9,12 @@ struct Swift_5_4: SwiftVersion {
                 description: #"When the type of an expression is implied by the context, Swift allows developers to use what is formally referred to as an "implicit member expression," sometimes referred to as "leading dot syntax"."#,
                 examples: [
                     SwiftCodeExample(
-                        code: """
-                        let milky: UIColor = .white.withAlphaComponent(0.5)
-                        let milky2: UIColor = .init(named: "white")!.withAlphaComponent(0.5)
-                        let milkyChance: UIColor? = .init(named: "white")?.withAlphaComponent(0.5)
-                    
-                        struct Foo {
+                        code: #"""
+                            let milky: UIColor = .white.withAlphaComponent(0.5)
+                            let milky2: UIColor = .init(named: "white")!.withAlphaComponent(0.5)
+                            let milkyChance: UIColor? = .init(named: "white")?.withAlphaComponent(0.5)
+                            
+                            struct Foo {
                             static var foo = Foo()
                             
                             var anotherFoo: Foo { Foo() }
@@ -24,32 +24,32 @@ struct Swift_5_4: SwiftVersion {
                             var optionalFooFunc: () -> Foo? { { Foo() } }
                             var fooFuncOptional: (() -> Foo)? { { Foo() } }
                             subscript() -> Foo { Foo() }
-                        }
-                    
-                        let _: Foo = .foo.anotherFoo
-                        let _: Foo = .foo.anotherFoo.anotherFoo.anotherFoo.anotherFoo
-                        let _: Foo = .foo.getFoo()
-                        let _: Foo = .foo.optionalFoo!.getFoo()
-                        let _: Foo = .foo.fooFunc()
-                        let _: Foo = .foo.optionalFooFunc()!
-                        let _: Foo = .foo.fooFuncOptional!()
-                        let _: Foo = .foo.optionalFoo!
-                        let _: Foo = .foo[]
-                        let _: Foo = .foo.anotherFoo[]
-                        let _: Foo = .foo.fooFuncOptional!()[]
-                    
-                        struct Bar {
+                            }
+                            
+                            let _: Foo = .foo.anotherFoo
+                            let _: Foo = .foo.anotherFoo.anotherFoo.anotherFoo.anotherFoo
+                            let _: Foo = .foo.getFoo()
+                            let _: Foo = .foo.optionalFoo!.getFoo()
+                            let _: Foo = .foo.fooFunc()
+                            let _: Foo = .foo.optionalFooFunc()!
+                            let _: Foo = .foo.fooFuncOptional!()
+                            let _: Foo = .foo.optionalFoo!
+                            let _: Foo = .foo[]
+                            let _: Foo = .foo.anotherFoo[]
+                            let _: Foo = .foo.fooFuncOptional!()[]
+                            
+                            struct Bar {
                             var anotherFoo = Foo()
-                        }
-                    
-                        extension Foo {
+                            }
+                            
+                            extension Foo {
                             static var bar = Bar()
                             var anotherBar: Bar { Bar() }
-                        }
-                    
-                        let _: Foo = .bar.anotherFoo
-                        let _: Foo = .foo.anotherBar.anotherFoo
-                        """
+                            }
+                            
+                            let _: Foo = .bar.anotherFoo
+                            let _: Foo = .foo.anotherBar.anotherFoo
+                        """#
                     )
                 ]
             ),
@@ -59,7 +59,7 @@ struct Swift_5_4: SwiftVersion {
                 evolutionID: "SE-0284",
                 description: """
                     Currently, variadic parameters in Swift are subject to two main restrictions:
-
+                    
                         - Only one variadic parameter is allowed per parameter list
                         - If present, the parameter which follows a variadic parameter must be labeled
                     
@@ -71,7 +71,7 @@ struct Swift_5_4: SwiftVersion {
                             struct HasSubscript {
                                 // Not allowed because the second parameter does not have an external label.
                                 subscript(a: Int..., b: Int...) -> [Int] { a + b }
-
+                            
                                 // Allowed
                                 subscript(a: Int..., b b: Int...) -> [Int] { a + b }
                             }
@@ -83,19 +83,19 @@ struct Swift_5_4: SwiftVersion {
                             // Note the label on the second parameter is required because it follows a variadic parameter.
                             func twoVarargs(_ a: Int..., b: Int...) { }
                             twoVarargs(1, 2, 3, b: 4, 5, 6)
-
+                            
                             // Variadic parameters can be omitted because they default to [].
                             twoVarargs(1, 2, 3)
                             twoVarargs(b: 4, 5, 6)
                             twoVarargs()
-
+                            
                             // The third parameter does not require a label because the second isn't variadic.
                             func splitVarargs(a: Int..., b: Int, _ c: Int...) { }
                             splitVarargs(a: 1, 2, 3, b: 4, 5, 6, 7)
                             // a is [1, 2, 3], b is 4, c is [5, 6, 7].
                             splitVarargs(b: 4)
                             // a is [], b is 4, c is [].
-
+                            
                             // Note the third parameter doesn't need a label even though the second has a default expression. This
                             // is consistent with the current behavior, which allows a variadic parameter followed by a labeled,
                             // defaulted parameter, followed by an unlabeled required parameter.
@@ -118,7 +118,7 @@ struct Swift_5_4: SwiftVersion {
                 evolutionID: "SR-10069",
                 description: """
                     These don't  compile:
-
+                    
                         - Nested overloads with different parameter types.
                         - Calling a nested function before an overload is defined later in the function.
                     """,
@@ -129,12 +129,12 @@ struct Swift_5_4: SwiftVersion {
                               func nested(_: Bool) { }
                               func nested(_: Int) { }
                             }
-
+                            
                             func ƒ2() {
                               func nested(bool _: Bool) { }
-
+                            
                               nested(bool: false)
-
+                            
                               func nested(int _: Int) { }
                             }
                             """
@@ -167,7 +167,7 @@ struct Swift_5_4: SwiftVersion {
                               2
                               3
                             }
-
+                            
                             // This code is interpreted exactly as if it were this code:
                             func build() -> (Int, Int, Int) {
                               let _a = TupleBuilder.buildExpression(1)
@@ -189,14 +189,14 @@ struct Swift_5_4: SwiftVersion {
                               // Similarly, Component could be "any Collection of HTML", and we'd just have
                               // to make buildBlock et al generic functions to support that.  But we'll keep
                               // it simple so that we can write these typealiases.
-
+                            
                               // Expression-statements in the DSL should always produce an HTML value.
                               typealias Expression = HTML
-
+                            
                               // "Internally" to the DSL, we'll just build up flattened arrays of HTML
                               // values, immediately flattening any optionality or nested array structure.
                               typealias Component = [HTML]
-
+                            
                               // Given an expression result, "lift" it into a Component.
                               //
                               // If Component were "any Collection of HTML", we could have this return
@@ -204,7 +204,7 @@ struct Swift_5_4: SwiftVersion {
                               static func buildExpression(_ expression: Expression) -> Component {
                                 return [expression]
                               }
-
+                            
                               // Build a combined result from a list of partial results by concatenating.
                               //
                               // If Component were "any Collection of HTML", we could avoid some unnecessary
@@ -212,7 +212,7 @@ struct Swift_5_4: SwiftVersion {
                               static func buildBlock(_ children: Component...) -> Component {
                                 return children.flatMap { $0 }
                               }
-
+                            
                               // We can provide this overload as a micro-optimization for the common case
                               // where there's only one partial result in a block.  This shows the flexibility
                               // of using an ad-hoc builder pattern.
@@ -224,7 +224,7 @@ struct Swift_5_4: SwiftVersion {
                               static func buildOptional(_ children: Component?) -> Component {
                                 return children ?? []
                               }
-
+                            
                               // Handle optionally-executed blocks.
                               static func buildEither(first child: Component) -> Component {
                                 return child
@@ -255,7 +255,7 @@ struct Swift_5_4: SwiftVersion {
                 evolutionID: "SE-0294",
                 description: """
                     This proposal lets Swift Package authors declare targets as executable in the package manifest. This replaces the current approach of inferring executability based on the presence of a source file with the base name main at the top level of the target source directory.
-
+                    
                     Letting package authors declare targets as executable allows the use of @main in Swift package targets. It also allows for better diagnostics, since the purpose of the target is unambiguous even if source files are moved or renamed.
                     """,
                 examples: [
